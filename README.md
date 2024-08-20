@@ -370,7 +370,15 @@ Mandato:
 
 3.  Genera la mariz de distancias.
 
-4.  Bonus. Con suerte, empeño e inteligencia artificial, intenta
+4.  Interpreta el resultado. Formula preguntas basándote en los
+    resultados obtenidos. No olvides que estás trabajando con rasgos
+    biométricos de personas; las distancias son número “insensibles”,
+    pero están expresando algo sobre la biometría de las personas
+    analizadas. Por ejemplo, ¿Qué significado tienen las distancias
+    pequeñas (si las hubiere) en el contexto analizado? ¿Qué significan
+    las distancias muy grandes?
+
+5.  Bonus. Con suerte, empeño e inteligencia artificial, intenta
     reproducirlo en R, ya sea en mi servidor (si tienes acceso), o en
     [rdrr.io](https://rdrr.io/snippets/). Para ello, necesitarás dos
     cosas:
