@@ -20,7 +20,7 @@ always_allow_html: true
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, out.width = '100%', fig.retina = 4)
 ```
 
 ```{r, include=F}
@@ -152,7 +152,7 @@ for (table in points_list) {
 
 ### Función para calcular la matriz de distancias y generar un mapa de calor con `ggplot2`
 
-```{r, eval=F}
+```{r, eval=T}
 library(ggplot2)
 library(reshape2)
 
@@ -169,7 +169,7 @@ calculate_distance_matrix <- function(x_coords, y_coords, title) {
   # Crear el mapa de calor usando ggplot2
   heatmap_plot <- ggplot(dist_long, aes(x = Punto1, y = Punto2, fill = Distancia)) +
     geom_tile(color = "white") +
-    scale_fill_gradient(low = "white", high = "blue") +
+    scale_fill_gradient(low = "white", high = "lightblue") +
     geom_text(aes(label = sprintf("%.2f", Distancia)), color = "black", size = 4) +
     theme_minimal() +
     labs(title = paste0("Mapa de Calor de la Matriz de Distancias (Conjunto ", title, ")"),
@@ -185,7 +185,7 @@ calculate_distance_matrix <- function(x_coords, y_coords, title) {
 
 ### Aplicar la función para calcular la matriz de distancias y generar un mapa de calor para todos los conjuntos
 
-```{r, eval=F}
+```{r, eval=T, out.width='60%'}
 distance_matrices <- lapply(1:20, function(conjunto) {
   print(paste0("Conjunto ", conjunto))
   calculate_distance_matrix(
@@ -232,6 +232,7 @@ Solución
 ```{r}
 library(tidyverse)
 library(reshape2)
+library(stringr)
 datos <- read.csv('biometria-basica.csv', check.names = F)
 datos_sel <- datos[,4:8]
 rownames(datos_sel) <- datos$`Nombre. No tienes que dar tu nombre verdadero, puedes usar un pseudónimo. No se puede dejar vacío.`
@@ -245,15 +246,47 @@ colnames(dist_long) <- c("Persona1", "Persona2", "Distancia")
 # Crear el mapa de calor usando ggplot2
 heatmap_plot <- ggplot(dist_long, aes(x = Persona1, y = Persona2, fill = Distancia)) +
     geom_tile(color = "white") +
-    scale_fill_gradient(low = "white", high = "blue") +
-    geom_text(aes(label = sprintf("%.2f", Distancia)), color = "black", size = 4) +
+    scale_fill_gradient(low = "white", high = "lightblue") +
+    geom_text(aes(label = sprintf("%.2f", Distancia)), color = "black", size = 2) +
     theme_minimal() +
     labs(title = "Mapa de Calor de la Matriz de Distancias",
          x = "Persona",
          y = "Persona",
-         fill = "Distancia")
-  
+         fill = "Distancia") +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +  # Aplicar str_wrap en eje x
+  scale_y_discrete(labels = function(y) str_wrap(y, width = 10)) +  # Aplicar str_wrap en eje y
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), text = element_text(size = 10))
 print(heatmap_plot)
+
+
+# Ordenado
+# Ordernar por distancia
+# dist_long_ord <- dist_long
+personas_ord_dist <- dist_long %>%
+  filter(Distancia>0) %>% 
+  arrange(Distancia) %>%
+  pull(unique(Persona1))
+dist_long_ord <- dist_long %>% 
+  mutate(Persona1 = factor(Persona1, levels = unique(personas_ord_dist)),
+         Persona2 = factor(Persona2, levels = unique(personas_ord_dist)))
+
+# Ahora creamos el mapa de calor ordenado
+heatmap_plot_ord <- ggplot(dist_long_ord, aes(x = Persona1, y = Persona2, fill = Distancia)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient(low = "white", high = "lightblue") +
+  geom_text(aes(label = sprintf("%.2f", Distancia)), color = "black", size = 2) +
+  theme_minimal() +
+  labs(title = "Mapa de calor de la matriz de distancias ordenadas ascendentemente",
+       x = "Punto",
+       y = "Punto",
+       fill = "Distancia") +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +  # Aplicar str_wrap en eje x
+  scale_y_discrete(labels = function(y) str_wrap(y, width = 10)) +  # Aplicar str_wrap en eje y
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), text = element_text(size = 10))
+
+print(heatmap_plot_ord)
+
+
 datos_sel_2 <- datos_sel %>% rownames_to_column('Nombre') %>% mutate(Género = datos$Género)
 datos_sel_2 %>%
   pivot_longer(cols = pulgar:meñique, names_to = 'Dedo', values_to = 'L (cm)') %>% 
@@ -261,6 +294,6 @@ datos_sel_2 %>%
   geom_boxplot() +
   facet_wrap(~Dedo) +
   theme_bw() +
-  theme(text = element_text(size = 24))
+  theme(text = element_text(size = 18))
 ```
 

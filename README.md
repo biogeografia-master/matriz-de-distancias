@@ -322,7 +322,7 @@ calculate_distance_matrix <- function(x_coords, y_coords, title) {
   # Crear el mapa de calor usando ggplot2
   heatmap_plot <- ggplot(dist_long, aes(x = Punto1, y = Punto2, fill = Distancia)) +
     geom_tile(color = "white") +
-    scale_fill_gradient(low = "white", high = "blue") +
+    scale_fill_gradient(low = "white", high = "lightblue") +
     geom_text(aes(label = sprintf("%.2f", Distancia)), color = "black", size = 4) +
     theme_minimal() +
     labs(title = paste0("Mapa de Calor de la Matriz de Distancias (Conjunto ", title, ")"),
@@ -346,9 +346,212 @@ distance_matrices <- lapply(1:20, function(conjunto) {
     y_coords = points_df[[conjunto]]$Y,
     title = conjunto)
 })
+```
+
+    ## [1] "Conjunto 1"
+
+<img src="README_files/figure-gfm/unnamed-chunk-6-1.png" width="60%" />
+
+    ## [1] "Conjunto 2"
+
+<img src="README_files/figure-gfm/unnamed-chunk-6-2.png" width="60%" />
+
+    ## [1] "Conjunto 3"
+
+<img src="README_files/figure-gfm/unnamed-chunk-6-3.png" width="60%" />
+
+    ## [1] "Conjunto 4"
+
+<img src="README_files/figure-gfm/unnamed-chunk-6-4.png" width="60%" />
+
+    ## [1] "Conjunto 5"
+
+<img src="README_files/figure-gfm/unnamed-chunk-6-5.png" width="60%" />
+
+    ## [1] "Conjunto 6"
+
+<img src="README_files/figure-gfm/unnamed-chunk-6-6.png" width="60%" />
+
+    ## [1] "Conjunto 7"
+
+<img src="README_files/figure-gfm/unnamed-chunk-6-7.png" width="60%" />
+
+    ## [1] "Conjunto 8"
+
+<img src="README_files/figure-gfm/unnamed-chunk-6-8.png" width="60%" />
+
+    ## [1] "Conjunto 9"
+
+<img src="README_files/figure-gfm/unnamed-chunk-6-9.png" width="60%" />
+
+    ## [1] "Conjunto 10"
+
+<img src="README_files/figure-gfm/unnamed-chunk-6-10.png" width="60%" />
+
+    ## [1] "Conjunto 11"
+
+<img src="README_files/figure-gfm/unnamed-chunk-6-11.png" width="60%" />
+
+    ## [1] "Conjunto 12"
+
+<img src="README_files/figure-gfm/unnamed-chunk-6-12.png" width="60%" />
+
+    ## [1] "Conjunto 13"
+
+<img src="README_files/figure-gfm/unnamed-chunk-6-13.png" width="60%" />
+
+    ## [1] "Conjunto 14"
+
+<img src="README_files/figure-gfm/unnamed-chunk-6-14.png" width="60%" />
+
+    ## [1] "Conjunto 15"
+
+<img src="README_files/figure-gfm/unnamed-chunk-6-15.png" width="60%" />
+
+    ## [1] "Conjunto 16"
+
+<img src="README_files/figure-gfm/unnamed-chunk-6-16.png" width="60%" />
+
+    ## [1] "Conjunto 17"
+
+<img src="README_files/figure-gfm/unnamed-chunk-6-17.png" width="60%" />
+
+    ## [1] "Conjunto 18"
+
+<img src="README_files/figure-gfm/unnamed-chunk-6-18.png" width="60%" />
+
+    ## [1] "Conjunto 19"
+
+<img src="README_files/figure-gfm/unnamed-chunk-6-19.png" width="60%" />
+
+    ## [1] "Conjunto 20"
+
+<img src="README_files/figure-gfm/unnamed-chunk-6-20.png" width="60%" />
+
+``` r
 names(distance_matrices) <- paste0('Conjunto ', 1:20)
 distance_matrices
 ```
+
+    ## $`Conjunto 1`
+    ##          A        B        C
+    ## A 0.000000 3.162278 9.899495
+    ## B 3.162278 0.000000 8.944272
+    ## C 9.899495 8.944272 0.000000
+    ## 
+    ## $`Conjunto 2`
+    ##           A         B        C
+    ## A  0.000000  2.236068 10.81665
+    ## B  2.236068  0.000000 11.31371
+    ## C 10.816654 11.313708  0.00000
+    ## 
+    ## $`Conjunto 3`
+    ##          A        B        C
+    ## A 0.000000 3.605551 8.602325
+    ## B 3.605551 0.000000 8.062258
+    ## C 8.602325 8.062258 0.000000
+    ## 
+    ## $`Conjunto 4`
+    ##           A        B        C
+    ## A  0.000000 4.123106 11.40175
+    ## B  4.123106 0.000000  7.81025
+    ## C 11.401754 7.810250  0.00000
+    ## 
+    ## $`Conjunto 5`
+    ##          A         B         C
+    ## A 0.000000  2.236068  9.848858
+    ## B 2.236068  0.000000 10.000000
+    ## C 9.848858 10.000000  0.000000
+    ## 
+    ## $`Conjunto 6`
+    ##          A        B        C
+    ## A 0.000000 2.236068 7.071068
+    ## B 2.236068 0.000000 6.708204
+    ## C 7.071068 6.708204 0.000000
+    ## 
+    ## $`Conjunto 7`
+    ##          A        B        C
+    ## A 0.000000 2.236068 9.486833
+    ## B 2.236068 0.000000 9.433981
+    ## C 9.486833 9.433981 0.000000
+    ## 
+    ## $`Conjunto 8`
+    ##          A        B        C
+    ## A 0.000000 2.236068 6.403124
+    ## B 2.236068 0.000000 7.211103
+    ## C 6.403124 7.211103 0.000000
+    ## 
+    ## $`Conjunto 9`
+    ##          A        B        C
+    ## A 0.000000 1.414214 8.602325
+    ## B 1.414214 0.000000 8.485281
+    ## C 8.602325 8.485281 0.000000
+    ## 
+    ## $`Conjunto 10`
+    ##          A        B        C
+    ## A 0.000000 3.605551 7.615773
+    ## B 3.605551 0.000000 7.810250
+    ## C 7.615773 7.810250 0.000000
+    ## 
+    ## $`Conjunto 11`
+    ##          A        B        C
+    ## A 0.000000 2.828427 8.544004
+    ## B 2.828427 0.000000 7.810250
+    ## C 8.544004 7.810250 0.000000
+    ## 
+    ## $`Conjunto 12`
+    ##          A        B        C
+    ## A 0.000000 2.236068 7.810250
+    ## B 2.236068 0.000000 8.602325
+    ## C 7.810250 8.602325 0.000000
+    ## 
+    ## $`Conjunto 13`
+    ##           A        B         C
+    ## A  0.000000 1.414214 10.630146
+    ## B  1.414214 0.000000  9.219544
+    ## C 10.630146 9.219544  0.000000
+    ## 
+    ## $`Conjunto 14`
+    ##          A         B        C
+    ## A 0.000000  3.605551  7.81025
+    ## B 3.605551  0.000000 11.31371
+    ## C 7.810250 11.313708  0.00000
+    ## 
+    ## $`Conjunto 15`
+    ##           A        B         C
+    ## A  0.000000 3.605551 12.041595
+    ## B  3.605551 0.000000  8.602325
+    ## C 12.041595 8.602325  0.000000
+    ## 
+    ## $`Conjunto 16`
+    ##          A        B        C
+    ## A 0.000000 1.414214 6.403124
+    ## B 1.414214 0.000000 7.810250
+    ## C 6.403124 7.810250 0.000000
+    ## 
+    ## $`Conjunto 17`
+    ##          A        B        C
+    ## A 0.000000 2.236068 8.485281
+    ## B 2.236068 0.000000 6.403124
+    ## C 8.485281 6.403124 0.000000
+    ## 
+    ## $`Conjunto 18`
+    ##          A        B        C
+    ## A 0.000000 3.162278 8.602325
+    ## B 3.162278 0.000000 7.211103
+    ## C 8.602325 7.211103 0.000000
+    ## 
+    ## $`Conjunto 19`
+    ##          A        B        C
+    ## A 0.000000 2.236068 7.071068
+    ## B 2.236068 0.000000 8.062258
+    ## C 7.071068 8.062258 0.000000
+    ## 
+    ## $`Conjunto 20`
+    ##           A        B         C
+    ## A  0.000000 1.414214 10.000000
+    ## B  1.414214 0.000000  8.602325
+    ## C 10.000000 8.602325  0.000000
 
 ### Parte 2. Biometría básica
 
@@ -410,6 +613,7 @@ Solución
 ``` r
 library(tidyverse)
 library(reshape2)
+library(stringr)
 datos <- read.csv('biometria-basica.csv', check.names = F)
 datos_sel <- datos[,4:8]
 rownames(datos_sel) <- datos$`Nombre. No tienes que dar tu nombre verdadero, puedes usar un pseudónimo. No se puede dejar vacío.`
@@ -423,18 +627,51 @@ colnames(dist_long) <- c("Persona1", "Persona2", "Distancia")
 # Crear el mapa de calor usando ggplot2
 heatmap_plot <- ggplot(dist_long, aes(x = Persona1, y = Persona2, fill = Distancia)) +
     geom_tile(color = "white") +
-    scale_fill_gradient(low = "white", high = "blue") +
-    geom_text(aes(label = sprintf("%.2f", Distancia)), color = "black", size = 4) +
+    scale_fill_gradient(low = "white", high = "lightblue") +
+    geom_text(aes(label = sprintf("%.2f", Distancia)), color = "black", size = 2) +
     theme_minimal() +
     labs(title = "Mapa de Calor de la Matriz de Distancias",
          x = "Persona",
          y = "Persona",
-         fill = "Distancia")
-  
+         fill = "Distancia") +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +  # Aplicar str_wrap en eje x
+  scale_y_discrete(labels = function(y) str_wrap(y, width = 10)) +  # Aplicar str_wrap en eje y
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), text = element_text(size = 10))
 print(heatmap_plot)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+<img src="README_files/figure-gfm/unnamed-chunk-9-1.png" width="100%" />
+
+``` r
+# Ordenado
+# Ordernar por distancia
+# dist_long_ord <- dist_long
+personas_ord_dist <- dist_long %>%
+  filter(Distancia>0) %>% 
+  arrange(Distancia) %>%
+  pull(unique(Persona1))
+dist_long_ord <- dist_long %>% 
+  mutate(Persona1 = factor(Persona1, levels = unique(personas_ord_dist)),
+         Persona2 = factor(Persona2, levels = unique(personas_ord_dist)))
+
+# Ahora creamos el mapa de calor ordenado
+heatmap_plot_ord <- ggplot(dist_long_ord, aes(x = Persona1, y = Persona2, fill = Distancia)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient(low = "white", high = "lightblue") +
+  geom_text(aes(label = sprintf("%.2f", Distancia)), color = "black", size = 2) +
+  theme_minimal() +
+  labs(title = "Mapa de calor de la matriz de distancias ordenadas ascendentemente",
+       x = "Punto",
+       y = "Punto",
+       fill = "Distancia") +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +  # Aplicar str_wrap en eje x
+  scale_y_discrete(labels = function(y) str_wrap(y, width = 10)) +  # Aplicar str_wrap en eje y
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), text = element_text(size = 10))
+
+print(heatmap_plot_ord)
+```
+
+<img src="README_files/figure-gfm/unnamed-chunk-9-2.png" width="100%" />
 
 ``` r
 datos_sel_2 <- datos_sel %>% rownames_to_column('Nombre') %>% mutate(Género = datos$Género)
@@ -444,7 +681,7 @@ datos_sel_2 %>%
   geom_boxplot() +
   facet_wrap(~Dedo) +
   theme_bw() +
-  theme(text = element_text(size = 24))
+  theme(text = element_text(size = 18))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-9-2.png)<!-- -->
+<img src="README_files/figure-gfm/unnamed-chunk-9-3.png" width="100%" />
