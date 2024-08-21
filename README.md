@@ -1,7 +1,7 @@
 Generación de la matriz de distancias
 ================
 Biogeografía (GEO-131)
-2024-08-20
+2024-08-21
 
 Versión HTML (quizá más legible),
 [aquí](https://biogeografia-master.github.io/matriz-de-distancias/README.html)
@@ -404,3 +404,47 @@ calculate_distance_matrix(
     y_coords = datos$x,
     title = datos$conjunto)
 ```
+
+Solución
+
+``` r
+library(tidyverse)
+library(reshape2)
+datos <- read.csv('biometria-basica.csv', check.names = F)
+datos_sel <- datos[,4:8]
+rownames(datos_sel) <- datos$`Nombre. No tienes que dar tu nombre verdadero, puedes usar un pseudónimo. No se puede dejar vacío.`
+colnames(datos_sel) <- c('pulgar', 'indice', 'mayor', 'anular', 'meñique')
+datos_sel_dist <- as.matrix(dist(datos_sel))
+dist_long <- melt(datos_sel_dist)
+colnames(dist_long) <- c("Persona1", "Persona2", "Distancia")
+```
+
+``` r
+# Crear el mapa de calor usando ggplot2
+heatmap_plot <- ggplot(dist_long, aes(x = Persona1, y = Persona2, fill = Distancia)) +
+    geom_tile(color = "white") +
+    scale_fill_gradient(low = "white", high = "blue") +
+    geom_text(aes(label = sprintf("%.2f", Distancia)), color = "black", size = 4) +
+    theme_minimal() +
+    labs(title = "Mapa de Calor de la Matriz de Distancias",
+         x = "Persona",
+         y = "Persona",
+         fill = "Distancia")
+  
+print(heatmap_plot)
+```
+
+![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+
+``` r
+datos_sel_2 <- datos_sel %>% rownames_to_column('Nombre') %>% mutate(Género = datos$Género)
+datos_sel_2 %>%
+  pivot_longer(cols = pulgar:meñique, names_to = 'Dedo', values_to = 'L (cm)') %>% 
+  ggplot + aes(x = Género, y = `L (cm)`) + 
+  geom_boxplot() +
+  facet_wrap(~Dedo) +
+  theme_bw() +
+  theme(text = element_text(size = 24))
+```
+
+![](README_files/figure-gfm/unnamed-chunk-9-2.png)<!-- -->
