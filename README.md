@@ -6,6 +6,10 @@ Biogeografía (GEO-131)
 Versión HTML (quizá más legible),
 [aquí](https://biogeografia-master.github.io/matriz-de-distancias/README.html)
 
+> Todas las prácticas de este curso están pensadas para realizarse con
+> lápiz, papel y, a veces una calculadora (del móvil). Ocasionalmente,
+> usarás alguna herramientas adicional.
+
 ## Introducción
 
 En este ejercicio, nos enfocaremos en la **Generación de la Matriz de

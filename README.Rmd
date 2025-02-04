@@ -42,6 +42,8 @@ if (grepl('gfm', output_format)) {
 }
 ```
 
+> Todas las prácticas de este curso están pensadas para realizarse con lápiz, papel y, a veces una calculadora (del móvil). Ocasionalmente, usarás alguna herramientas adicional.
+
 ## Introducción
 
 En este ejercicio, nos enfocaremos en la **Generación de la Matriz de Distancias** entre puntos en un espacio bidimensional. La matriz de distancias es una herramienta crucial en la geografía, biogeografía y análisis espacial, ya que permite cuantificar la proximidad entre diferentes puntos de interés. Como métrica usaremos la distancia euclidiana. La distancia euclidiana es la más común, pero no necesariamente es la más idónea en todos los casos. Existen otras métricas de distancia, y te pido que leas [este reciente artículo](https://nsojournals.onlinelibrary.wiley.com/doi/10.1111/ecog.07612) de @scheele2025invasive, especialmente la sección "*Materials and Methods*"; pide ayuda a alguna IA con la terminología y la extracción de las principales ideas.
