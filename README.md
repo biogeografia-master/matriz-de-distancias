@@ -1,7 +1,7 @@
 Generación de la matriz de distancias
 ================
 Biogeografía (GEO-131)
-2024-08-21
+2025-02-04
 
 Versión HTML (quizá más legible),
 [aquí](https://biogeografia-master.github.io/matriz-de-distancias/README.html)
@@ -13,7 +13,13 @@ Distancias** entre puntos en un espacio bidimensional. La matriz de
 distancias es una herramienta crucial en la geografía, biogeografía y
 análisis espacial, ya que permite cuantificar la proximidad entre
 diferentes puntos de interés. Como métrica usaremos la distancia
-euclidiana.
+euclidiana. La distancia euclidiana es la más común, pero no
+necesariamente es la más idónea en todos los casos. Existen otras
+métricas de distancia, y te pido que leas [este reciente
+artículo](https://nsojournals.onlinelibrary.wiley.com/doi/10.1111/ecog.07612)
+de Scheele et al. (2025), especialmente la sección “*Materials and
+Methods*”; pide ayuda a alguna IA con la terminología y la extracción de
+las principales ideas.
 
 ## Teoría
 
@@ -57,7 +63,23 @@ x_C <- 10; y_C <- 10
 coords <- matrix(c(x_A, y_A, x_B, y_B, x_C, y_C), ncol = 2, byrow = TRUE)
 rownames(coords) <- c("A", "B", "C")
 colnames(coords) <- c("X", "Y")
+```
 
+Representamos cada punto en un gráfico de dispersión.
+
+``` r
+library(ggplot2)
+ggplot(data = as.data.frame(coords), aes(x = X, y = Y)) +
+  geom_point(size = 3) +
+  geom_text(aes(label = rownames(coords)), vjust = -1) +
+  xlim(0, 12) + ylim(0, 12) +
+  labs(title = "Puntos en el Plano Bidimensional", x = "Coordenada X", y = "Coordenada Y") +
+  theme_minimal()
+```
+
+<img src="README_files/figure-gfm/unnamed-chunk-4-1.png" width="75%" />
+
+``` r
 # Función para calcular la matriz de distancias
 distance_matrix <- function(coords) {
   dist(coords)
@@ -65,13 +87,14 @@ distance_matrix <- function(coords) {
 
 # Calcular la matriz de distancias
 distances <- distance_matrix(coords)
-as.matrix(distances)
+knitr::kable(as.matrix(distances))
 ```
 
-    ##           A        B         C
-    ## A  0.000000 1.414214 11.313708
-    ## B  1.414214 0.000000  9.899495
-    ## C 11.313708 9.899495  0.000000
+|     |         A |        B |         C |
+|:----|----------:|---------:|----------:|
+| A   |  0.000000 | 1.414214 | 11.313709 |
+| B   |  1.414214 | 0.000000 |  9.899495 |
+| C   | 11.313709 | 9.899495 |  0.000000 |
 
 La matriz de distancias se compone del triángulo inferior, el triángulo
 superior y la diagonal principal. La diagonal principal contiene ceros,
@@ -86,8 +109,8 @@ misma independientemente de la dirección en la que se mida.
 
 Mandato:
 
-1.  Elige un conjunto de los que aparecen abajo, poniéndote de acuerdo
-    con tus compañeros y compañeros para evitar duplicidad.
+1.  Elige un conjunto de los que aparecen abajo. Anuncia tu elección en
+    el foro para evitar duplicidad.
 
 2.  Calcula la matriz de distancias entre tres puntos de coordenadas
     $X, Y$ diferentes.
@@ -107,7 +130,7 @@ library(knitr)
 library(dplyr)
 
 # Número de conjuntos
-num_sets <- 20
+num_sets <- 30
 
 # Función para generar una tabla para cada conjunto
 generate_points <- function(set_id) {
@@ -303,6 +326,86 @@ for (table in points_list) {
 |    B     |  2  |  4  |
 |    C     |  9  |  9  |
 
+**Conjunto \#21**
+
+| ID Punto |  X  |  Y  |
+|:--------:|:---:|:---:|
+|    A     |  3  |  1  |
+|    B     |  2  |  3  |
+|    C     | 10  | 10  |
+
+**Conjunto \#22**
+
+| ID Punto |  X  |  Y  |
+|:--------:|:---:|:---:|
+|    A     |  5  |  2  |
+|    B     |  3  |  5  |
+|    C     | 10  |  9  |
+
+**Conjunto \#23**
+
+| ID Punto |  X  |  Y  |
+|:--------:|:---:|:---:|
+|    A     |  3  |  5  |
+|    B     |  2  |  3  |
+|    C     |  8  | 10  |
+
+**Conjunto \#24**
+
+| ID Punto |  X  |  Y  |
+|:--------:|:---:|:---:|
+|    A     |  4  |  4  |
+|    B     |  5  |  1  |
+|    C     |  9  | 10  |
+
+**Conjunto \#25**
+
+| ID Punto |  X  |  Y  |
+|:--------:|:---:|:---:|
+|    A     |  1  |  2  |
+|    B     |  3  |  1  |
+|    C     |  9  | 10  |
+
+**Conjunto \#26**
+
+| ID Punto |  X  |  Y  |
+|:--------:|:---:|:---:|
+|    A     |  2  |  3  |
+|    B     |  4  |  4  |
+|    C     |  8  | 10  |
+
+**Conjunto \#27**
+
+| ID Punto |  X  |  Y  |
+|:--------:|:---:|:---:|
+|    A     |  4  |  4  |
+|    B     |  1  |  1  |
+|    C     |  9  |  9  |
+
+**Conjunto \#28**
+
+| ID Punto |  X  |  Y  |
+|:--------:|:---:|:---:|
+|    A     |  3  |  5  |
+|    B     |  4  |  4  |
+|    C     | 10  |  9  |
+
+**Conjunto \#29**
+
+| ID Punto |  X  |  Y  |
+|:--------:|:---:|:---:|
+|    A     |  1  |  4  |
+|    B     |  2  |  3  |
+|    C     | 10  |  8  |
+
+**Conjunto \#30**
+
+| ID Punto |  X  |  Y  |
+|:--------:|:---:|:---:|
+|    A     |  5  |  3  |
+|    B     |  1  |  1  |
+|    C     |  9  |  9  |
+
 ### Función para calcular la matriz de distancias y generar un mapa de calor con `ggplot2`
 
 ``` r
@@ -339,7 +442,7 @@ calculate_distance_matrix <- function(x_coords, y_coords, title) {
 ### Aplicar la función para calcular la matriz de distancias y generar un mapa de calor para todos los conjuntos
 
 ``` r
-distance_matrices <- lapply(1:20, function(conjunto) {
+distance_matrices <- lapply(1:num_sets, function(conjunto) {
   print(paste0("Conjunto ", conjunto))
   calculate_distance_matrix(
     x_coords = points_df[[conjunto]]$X,
@@ -350,86 +453,126 @@ distance_matrices <- lapply(1:20, function(conjunto) {
 
     ## [1] "Conjunto 1"
 
-<img src="README_files/figure-gfm/unnamed-chunk-6-1.png" width="60%" />
+<img src="README_files/figure-gfm/unnamed-chunk-8-1.png" width="60%" />
 
     ## [1] "Conjunto 2"
 
-<img src="README_files/figure-gfm/unnamed-chunk-6-2.png" width="60%" />
+<img src="README_files/figure-gfm/unnamed-chunk-8-2.png" width="60%" />
 
     ## [1] "Conjunto 3"
 
-<img src="README_files/figure-gfm/unnamed-chunk-6-3.png" width="60%" />
+<img src="README_files/figure-gfm/unnamed-chunk-8-3.png" width="60%" />
 
     ## [1] "Conjunto 4"
 
-<img src="README_files/figure-gfm/unnamed-chunk-6-4.png" width="60%" />
+<img src="README_files/figure-gfm/unnamed-chunk-8-4.png" width="60%" />
 
     ## [1] "Conjunto 5"
 
-<img src="README_files/figure-gfm/unnamed-chunk-6-5.png" width="60%" />
+<img src="README_files/figure-gfm/unnamed-chunk-8-5.png" width="60%" />
 
     ## [1] "Conjunto 6"
 
-<img src="README_files/figure-gfm/unnamed-chunk-6-6.png" width="60%" />
+<img src="README_files/figure-gfm/unnamed-chunk-8-6.png" width="60%" />
 
     ## [1] "Conjunto 7"
 
-<img src="README_files/figure-gfm/unnamed-chunk-6-7.png" width="60%" />
+<img src="README_files/figure-gfm/unnamed-chunk-8-7.png" width="60%" />
 
     ## [1] "Conjunto 8"
 
-<img src="README_files/figure-gfm/unnamed-chunk-6-8.png" width="60%" />
+<img src="README_files/figure-gfm/unnamed-chunk-8-8.png" width="60%" />
 
     ## [1] "Conjunto 9"
 
-<img src="README_files/figure-gfm/unnamed-chunk-6-9.png" width="60%" />
+<img src="README_files/figure-gfm/unnamed-chunk-8-9.png" width="60%" />
 
     ## [1] "Conjunto 10"
 
-<img src="README_files/figure-gfm/unnamed-chunk-6-10.png" width="60%" />
+<img src="README_files/figure-gfm/unnamed-chunk-8-10.png" width="60%" />
 
     ## [1] "Conjunto 11"
 
-<img src="README_files/figure-gfm/unnamed-chunk-6-11.png" width="60%" />
+<img src="README_files/figure-gfm/unnamed-chunk-8-11.png" width="60%" />
 
     ## [1] "Conjunto 12"
 
-<img src="README_files/figure-gfm/unnamed-chunk-6-12.png" width="60%" />
+<img src="README_files/figure-gfm/unnamed-chunk-8-12.png" width="60%" />
 
     ## [1] "Conjunto 13"
 
-<img src="README_files/figure-gfm/unnamed-chunk-6-13.png" width="60%" />
+<img src="README_files/figure-gfm/unnamed-chunk-8-13.png" width="60%" />
 
     ## [1] "Conjunto 14"
 
-<img src="README_files/figure-gfm/unnamed-chunk-6-14.png" width="60%" />
+<img src="README_files/figure-gfm/unnamed-chunk-8-14.png" width="60%" />
 
     ## [1] "Conjunto 15"
 
-<img src="README_files/figure-gfm/unnamed-chunk-6-15.png" width="60%" />
+<img src="README_files/figure-gfm/unnamed-chunk-8-15.png" width="60%" />
 
     ## [1] "Conjunto 16"
 
-<img src="README_files/figure-gfm/unnamed-chunk-6-16.png" width="60%" />
+<img src="README_files/figure-gfm/unnamed-chunk-8-16.png" width="60%" />
 
     ## [1] "Conjunto 17"
 
-<img src="README_files/figure-gfm/unnamed-chunk-6-17.png" width="60%" />
+<img src="README_files/figure-gfm/unnamed-chunk-8-17.png" width="60%" />
 
     ## [1] "Conjunto 18"
 
-<img src="README_files/figure-gfm/unnamed-chunk-6-18.png" width="60%" />
+<img src="README_files/figure-gfm/unnamed-chunk-8-18.png" width="60%" />
 
     ## [1] "Conjunto 19"
 
-<img src="README_files/figure-gfm/unnamed-chunk-6-19.png" width="60%" />
+<img src="README_files/figure-gfm/unnamed-chunk-8-19.png" width="60%" />
 
     ## [1] "Conjunto 20"
 
-<img src="README_files/figure-gfm/unnamed-chunk-6-20.png" width="60%" />
+<img src="README_files/figure-gfm/unnamed-chunk-8-20.png" width="60%" />
+
+    ## [1] "Conjunto 21"
+
+<img src="README_files/figure-gfm/unnamed-chunk-8-21.png" width="60%" />
+
+    ## [1] "Conjunto 22"
+
+<img src="README_files/figure-gfm/unnamed-chunk-8-22.png" width="60%" />
+
+    ## [1] "Conjunto 23"
+
+<img src="README_files/figure-gfm/unnamed-chunk-8-23.png" width="60%" />
+
+    ## [1] "Conjunto 24"
+
+<img src="README_files/figure-gfm/unnamed-chunk-8-24.png" width="60%" />
+
+    ## [1] "Conjunto 25"
+
+<img src="README_files/figure-gfm/unnamed-chunk-8-25.png" width="60%" />
+
+    ## [1] "Conjunto 26"
+
+<img src="README_files/figure-gfm/unnamed-chunk-8-26.png" width="60%" />
+
+    ## [1] "Conjunto 27"
+
+<img src="README_files/figure-gfm/unnamed-chunk-8-27.png" width="60%" />
+
+    ## [1] "Conjunto 28"
+
+<img src="README_files/figure-gfm/unnamed-chunk-8-28.png" width="60%" />
+
+    ## [1] "Conjunto 29"
+
+<img src="README_files/figure-gfm/unnamed-chunk-8-29.png" width="60%" />
+
+    ## [1] "Conjunto 30"
+
+<img src="README_files/figure-gfm/unnamed-chunk-8-30.png" width="60%" />
 
 ``` r
-names(distance_matrices) <- paste0('Conjunto ', 1:20)
+names(distance_matrices) <- paste0('Conjunto ', 1:num_sets)
 distance_matrices
 ```
 
@@ -552,30 +695,91 @@ distance_matrices
     ## A  0.000000 1.414214 10.000000
     ## B  1.414214 0.000000  8.602325
     ## C 10.000000 8.602325  0.000000
+    ## 
+    ## $`Conjunto 21`
+    ##           A         B        C
+    ## A  0.000000  2.236068 11.40175
+    ## B  2.236068  0.000000 10.63015
+    ## C 11.401754 10.630146  0.00000
+    ## 
+    ## $`Conjunto 22`
+    ##          A        B        C
+    ## A 0.000000 3.605551 8.602325
+    ## B 3.605551 0.000000 8.062258
+    ## C 8.602325 8.062258 0.000000
+    ## 
+    ## $`Conjunto 23`
+    ##          A        B        C
+    ## A 0.000000 2.236068 7.071068
+    ## B 2.236068 0.000000 9.219544
+    ## C 7.071068 9.219544 0.000000
+    ## 
+    ## $`Conjunto 24`
+    ##          A        B        C
+    ## A 0.000000 3.162278 7.810250
+    ## B 3.162278 0.000000 9.848858
+    ## C 7.810250 9.848858 0.000000
+    ## 
+    ## $`Conjunto 25`
+    ##           A         B        C
+    ## A  0.000000  2.236068 11.31371
+    ## B  2.236068  0.000000 10.81665
+    ## C 11.313708 10.816654  0.00000
+    ## 
+    ## $`Conjunto 26`
+    ##          A        B        C
+    ## A 0.000000 2.236068 9.219544
+    ## B 2.236068 0.000000 7.211103
+    ## C 9.219544 7.211103 0.000000
+    ## 
+    ## $`Conjunto 27`
+    ##          A         B         C
+    ## A 0.000000  4.242641  7.071068
+    ## B 4.242641  0.000000 11.313708
+    ## C 7.071068 11.313708  0.000000
+    ## 
+    ## $`Conjunto 28`
+    ##          A        B        C
+    ## A 0.000000 1.414214 8.062258
+    ## B 1.414214 0.000000 7.810250
+    ## C 8.062258 7.810250 0.000000
+    ## 
+    ## $`Conjunto 29`
+    ##          A        B        C
+    ## A 0.000000 1.414214 9.848858
+    ## B 1.414214 0.000000 9.433981
+    ## C 9.848858 9.433981 0.000000
+    ## 
+    ## $`Conjunto 30`
+    ##          A         B         C
+    ## A 0.000000  4.472136  7.211103
+    ## B 4.472136  0.000000 11.313708
+    ## C 7.211103 11.313708  0.000000
 
 ### Parte 2. Biometría básica
 
 Mandato:
 
 1.  Rellena [este
-    formulario](https://docs.google.com/forms/d/e/1FAIpQLSe2vi6we4tZBG3jxb0v7SrTrJRwbngt3VEuFgjXxrowNnxRZA/viewform?usp=sharing).
+    formulario](https://docs.google.com/forms/d/e/1FAIpQLSdSC4afeJeaH7WG1-NekjFwOFh22dcAdVpdYbMFIeCke7u7aA/viewform?usp=dialog).
 
 <img src="qr.jpg" style="width:35.0%" />
 
 2.  Cuando haya varias respuestas en línea, para no complicarlo, elige
-    sólo 3 conjunto de datos (es decir, mediciones de 3 estudiantes), y
+    sólo tres conjuntos de datos (es decir, mediciones de tres
+    estudiantes, preferiblemente, dos de un género y uno del otro), y
     sólo dos variables (e.g. mediciones de longitud de meñique y pulgar,
     pero no tienes que elegir necesariamente estos dos, pueden ser
-    otros, lo importante es que sólo sean dos para simplificar) que
-    utilizarás como coordenadas X e Y. Los datos se alojarán en esta
-    [hoja de
-    cálculo](https://docs.google.com/spreadsheets/d/14JrVEx-oKtIsGCDFh049DDtoh7o4FQJWFuDWNYS4nfk/edit?usp=sharing).
+    otros, lo importante es que sólo sean dos dedos de tres personas
+    para simplificar) que utilizarás como coordenadas X e Y. Los datos
+    se alojarán en esta [hoja de
+    cálculo](https://docs.google.com/spreadsheets/d/1XsLfqS-xOAMjutK6zgQB9inw6G2VhWt2bNmaaC3eBrA/edit?usp=sharing).
 
 3.  Genera la mariz de distancias.
 
 4.  Interpreta el resultado. Formula preguntas basándote en los
     resultados obtenidos. No olvides que estás trabajando con rasgos
-    biométricos de personas; las distancias son número “insensibles”,
+    biométricos de personas; las distancias son números “insensibles”,
     pero están expresando algo sobre la biometría de las personas
     analizadas. Por ejemplo, ¿Qué significado tienen las distancias
     pequeñas (si las hubiere) en el contexto analizado? ¿Qué significan
@@ -586,21 +790,50 @@ Mandato:
     [rdrr.io](https://rdrr.io/snippets/). Para ello, necesitarás dos
     cosas:
 
-    1.  Ejecutar todo el código de R que se encuentra arriba. La mejor
-        manera es clonar este repositorio
-        (<https://github.com/biogeografia-master/matriz-de-distancias.git>)
-        y ejecutarlo desde mi servidor o desde tu PC, si tienes R
-        instalado. Para clonar puedes usar el botón verde `Code` que se
-        encuentra en la página del repositorio. Con RStudio, podrás
-        hacerlo también, usando `New Project`. Más detalles en el aula.
-    2.  Pasarle los datos al intérprete de R, ya sea mediante un archivo
-        (en mi servidor) o creando un `data.frame` directamente en
-        rdrr.io con algo como esto:
+- Paso 1. Ejecutar el bloque de código de R que se encuentra justo
+  debajo de este párrafo (es algo redundante, porque también se
+  encuentra más arriba en este cuaderno, pero mejor tenerlo abajo
+  también para garantizar su ejecución sin problemas).
 
 ``` r
-datos <- data.frame(conjunto = c(AQUÍ VAN LOS NOMBRES/PSEUDÓNIMOS DE LAS PERSONAS SEPARADOS POR COMAS),
-                    x = c(AQUÍ VAN LAS MEDICIONES DE UNO DE LOS DEDOS ELEGIDOS),
-                    Y = c(AQUÍ VAN LAS MEDICIONES DEL OTRO DEDO ELEGIDO))
+library(ggplot2)
+library(reshape2)
+calculate_distance_matrix <- function(x_coords, y_coords, title) {
+  coords <- cbind(x_coords, y_coords)
+  rownames(coords) <- LETTERS[1:nrow(coords)]
+  colnames(coords) <- c("X", "Y")
+  dist_matrix <- as.matrix(dist(coords))
+  
+  # Convertir la matriz de distancias a formato largo para ggplot2
+  dist_long <- melt(dist_matrix)
+  colnames(dist_long) <- c("Punto1", "Punto2", "Distancia")
+  
+  # Crear el mapa de calor usando ggplot2
+  heatmap_plot <- ggplot(dist_long, aes(x = Punto1, y = Punto2, fill = Distancia)) +
+    geom_tile(color = "white") +
+    scale_fill_gradient(low = "white", high = "lightblue") +
+    geom_text(aes(label = sprintf("%.2f", Distancia)), color = "black", size = 4) +
+    theme_minimal() +
+    labs(title = paste0("Mapa de Calor de la Matriz de Distancias (Conjunto ", title, ")"),
+         x = "Punto",
+         y = "Punto",
+         fill = "Distancia")
+  
+  print(heatmap_plot)
+  
+  return(dist_matrix)
+}
+```
+
+- Paso 2. Pasarle los datos al intérprete de R, ya sea mediante un
+  archivo (en mi servidor) o creando un `data.frame` directamente en
+  [rdrr.io](https://rdrr.io/snippets/) con algo como esto:
+
+``` r
+datos <- data.frame(
+  conjunto = c(AQUÍ VAN LOS NOMBRES/PSEUDÓNIMOS DE LAS PERSONAS SEPARADOS POR COMAS),
+  x = c(AQUÍ VAN LAS MEDICIONES DE UNO DE LOS DEDOS ELEGIDOS),
+  Y = c(AQUÍ VAN LAS MEDICIONES DEL OTRO DEDO ELEGIDO))
 
 calculate_distance_matrix(
     x_coords = datos$x,
@@ -608,80 +841,15 @@ calculate_distance_matrix(
     title = datos$conjunto)
 ```
 
-Solución
+<div id="refs" class="references csl-bib-body hanging-indent"
+entry-spacing="0">
 
-``` r
-library(tidyverse)
-library(reshape2)
-library(stringr)
-datos <- read.csv('biometria-basica.csv', check.names = F)
-datos_sel <- datos[,4:8]
-rownames(datos_sel) <- datos$`Nombre. No tienes que dar tu nombre verdadero, puedes usar un pseudónimo. No se puede dejar vacío.`
-colnames(datos_sel) <- c('pulgar', 'indice', 'mayor', 'anular', 'meñique')
-datos_sel_dist <- as.matrix(dist(datos_sel))
-dist_long <- melt(datos_sel_dist)
-colnames(dist_long) <- c("Persona1", "Persona2", "Distancia")
-```
+<div id="ref-scheele2025invasive" class="csl-entry">
 
-``` r
-# Crear el mapa de calor usando ggplot2
-heatmap_plot <- ggplot(dist_long, aes(x = Persona1, y = Persona2, fill = Distancia)) +
-    geom_tile(color = "white") +
-    scale_fill_gradient(low = "white", high = "lightblue") +
-    geom_text(aes(label = sprintf("%.2f", Distancia)), color = "black", size = 2) +
-    theme_minimal() +
-    labs(title = "Mapa de Calor de la Matriz de Distancias",
-         x = "Persona",
-         y = "Persona",
-         fill = "Distancia") +
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +  # Aplicar str_wrap en eje x
-  scale_y_discrete(labels = function(y) str_wrap(y, width = 10)) +  # Aplicar str_wrap en eje y
-  theme(axis.text.x = element_text(angle = 45, hjust = 1), text = element_text(size = 10))
-print(heatmap_plot)
-```
+Scheele, Ben C, Geoffrey W Heard, Richard P Duncan, Simon Clulow, and
+Jarrod Sopniewski. 2025. “An Invasive Pathogen Generally Contracts
+Species to Their Niche Cores, Not Margins.” *Ecography*, e07612.
 
-<img src="README_files/figure-gfm/unnamed-chunk-9-1.png" width="100%" />
+</div>
 
-``` r
-# Ordenado
-# Ordernar por distancia
-# dist_long_ord <- dist_long
-personas_ord_dist <- dist_long %>%
-  filter(Distancia>0) %>% 
-  arrange(Distancia) %>%
-  pull(unique(Persona1))
-dist_long_ord <- dist_long %>% 
-  mutate(Persona1 = factor(Persona1, levels = unique(personas_ord_dist)),
-         Persona2 = factor(Persona2, levels = unique(personas_ord_dist)))
-
-# Ahora creamos el mapa de calor ordenado
-heatmap_plot_ord <- ggplot(dist_long_ord, aes(x = Persona1, y = Persona2, fill = Distancia)) +
-  geom_tile(color = "white") +
-  scale_fill_gradient(low = "white", high = "lightblue") +
-  geom_text(aes(label = sprintf("%.2f", Distancia)), color = "black", size = 2) +
-  theme_minimal() +
-  labs(title = "Mapa de calor de la matriz de distancias ordenadas ascendentemente",
-       x = "Punto",
-       y = "Punto",
-       fill = "Distancia") +
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +  # Aplicar str_wrap en eje x
-  scale_y_discrete(labels = function(y) str_wrap(y, width = 10)) +  # Aplicar str_wrap en eje y
-  theme(axis.text.x = element_text(angle = 45, hjust = 1), text = element_text(size = 10))
-
-print(heatmap_plot_ord)
-```
-
-<img src="README_files/figure-gfm/unnamed-chunk-9-2.png" width="100%" />
-
-``` r
-datos_sel_2 <- datos_sel %>% rownames_to_column('Nombre') %>% mutate(Género = datos$Género)
-datos_sel_2 %>%
-  pivot_longer(cols = pulgar:meñique, names_to = 'Dedo', values_to = 'L (cm)') %>% 
-  ggplot + aes(x = Género, y = `L (cm)`) + 
-  geom_boxplot() +
-  facet_wrap(~Dedo) +
-  theme_bw() +
-  theme(text = element_text(size = 18))
-```
-
-<img src="README_files/figure-gfm/unnamed-chunk-9-3.png" width="100%" />
+</div>

@@ -6,6 +6,7 @@ output:
   # bookdown::github_document2:
   #   number_sections: false
   #   fig_caption: yes
+  #   keep_html: true
   bookdown::html_document2:
     number_sections: false
     code_folding: hide
@@ -17,6 +18,7 @@ output:
 editor_options: 
   chunk_output_type: console
 always_allow_html: true
+bibliography: bibliografia.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -42,7 +44,7 @@ if (grepl('gfm', output_format)) {
 
 ## Introducción
 
-En este ejercicio, nos enfocaremos en la **Generación de la Matriz de Distancias** entre puntos en un espacio bidimensional. La matriz de distancias es una herramienta crucial en la geografía, biogeografía y análisis espacial, ya que permite cuantificar la proximidad entre diferentes puntos de interés. Como métrica usaremos la distancia euclidiana.
+En este ejercicio, nos enfocaremos en la **Generación de la Matriz de Distancias** entre puntos en un espacio bidimensional. La matriz de distancias es una herramienta crucial en la geografía, biogeografía y análisis espacial, ya que permite cuantificar la proximidad entre diferentes puntos de interés. Como métrica usaremos la distancia euclidiana. La distancia euclidiana es la más común, pero no necesariamente es la más idónea en todos los casos. Existen otras métricas de distancia, y te pido que leas [este reciente artículo](https://nsojournals.onlinelibrary.wiley.com/doi/10.1111/ecog.07612) de @scheele2025invasive, especialmente la sección "*Materials and Methods*"; pide ayuda a alguna IA con la terminología y la extracción de las principales ideas.
 
 ## Teoría
 
@@ -80,7 +82,22 @@ x_C <- 10; y_C <- 10
 coords <- matrix(c(x_A, y_A, x_B, y_B, x_C, y_C), ncol = 2, byrow = TRUE)
 rownames(coords) <- c("A", "B", "C")
 colnames(coords) <- c("X", "Y")
+```
 
+Representamos cada punto en un gráfico de dispersión.
+
+```{r, out.width='75%'}
+library(ggplot2)
+ggplot(data = as.data.frame(coords), aes(x = X, y = Y)) +
+  geom_point(size = 3) +
+  geom_text(aes(label = rownames(coords)), vjust = -1) +
+  xlim(0, 12) + ylim(0, 12) +
+  labs(title = "Puntos en el Plano Bidimensional", x = "Coordenada X", y = "Coordenada Y") +
+  theme_minimal()
+```
+
+
+```{r}
 # Función para calcular la matriz de distancias
 distance_matrix <- function(coords) {
   dist(coords)
@@ -88,8 +105,9 @@ distance_matrix <- function(coords) {
 
 # Calcular la matriz de distancias
 distances <- distance_matrix(coords)
-as.matrix(distances)
+knitr::kable(as.matrix(distances))
 ```
+
 
 La matriz de distancias se compone del triángulo inferior, el triángulo superior y la diagonal principal. La diagonal principal contiene ceros, ya que representa la distancia de un punto consigo mismo. En este caso, por tratarse de distancia euclidiana, los triángulos superior e inferior son simétricos entre sí, ya que la distancia entre dos puntos es la misma independientemente de la dirección en la que se mida.
 
@@ -99,7 +117,7 @@ La matriz de distancias se compone del triángulo inferior, el triángulo superi
 
 Mandato:
 
-1. Elige un conjunto de los que aparecen abajo, poniéndote de acuerdo con tus compañeros y compañeros para evitar duplicidad.
+1. Elige un conjunto de los que aparecen abajo. Anuncia tu elección en el foro para evitar duplicidad.
 
 2. Calcula la matriz de distancias entre tres puntos de coordenadas \( X, Y \) diferentes.
 
@@ -112,7 +130,7 @@ library(knitr)
 library(dplyr)
 
 # Número de conjuntos
-num_sets <- 20
+num_sets <- 30
 
 # Función para generar una tabla para cada conjunto
 generate_points <- function(set_id) {
@@ -147,8 +165,6 @@ for (table in points_list) {
   cat("\n\n")
 }
 ```
-
-
 
 ### Función para calcular la matriz de distancias y generar un mapa de calor con `ggplot2`
 
@@ -186,14 +202,14 @@ calculate_distance_matrix <- function(x_coords, y_coords, title) {
 ### Aplicar la función para calcular la matriz de distancias y generar un mapa de calor para todos los conjuntos
 
 ```{r, eval=T, out.width='60%'}
-distance_matrices <- lapply(1:20, function(conjunto) {
+distance_matrices <- lapply(1:num_sets, function(conjunto) {
   print(paste0("Conjunto ", conjunto))
   calculate_distance_matrix(
     x_coords = points_df[[conjunto]]$X,
     y_coords = points_df[[conjunto]]$Y,
     title = conjunto)
 })
-names(distance_matrices) <- paste0('Conjunto ', 1:20)
+names(distance_matrices) <- paste0('Conjunto ', 1:num_sets)
 distance_matrices
 ```
 
@@ -201,25 +217,58 @@ distance_matrices
 
 Mandato:
 
-1. Rellena [este formulario](https://docs.google.com/forms/d/e/1FAIpQLSe2vi6we4tZBG3jxb0v7SrTrJRwbngt3VEuFgjXxrowNnxRZA/viewform?usp=sharing).
+1. Rellena [este formulario](https://docs.google.com/forms/d/e/1FAIpQLSdSC4afeJeaH7WG1-NekjFwOFh22dcAdVpdYbMFIeCke7u7aA/viewform?usp=dialog).
 
 ![](qr.jpg){width=35%}
 
-2. Cuando haya varias respuestas en línea, para no complicarlo, elige sólo 3 conjunto de datos (es decir, mediciones de 3 estudiantes), y sólo dos variables (e.g. mediciones de longitud de meñique y pulgar, pero no tienes que elegir necesariamente estos dos, pueden ser otros, lo importante es que sólo sean dos para simplificar) que utilizarás como coordenadas X e Y. Los datos se alojarán en esta [hoja de cálculo](https://docs.google.com/spreadsheets/d/14JrVEx-oKtIsGCDFh049DDtoh7o4FQJWFuDWNYS4nfk/edit?usp=sharing).
+2. Cuando haya varias respuestas en línea, para no complicarlo, elige sólo tres conjuntos de datos (es decir, mediciones de tres estudiantes, preferiblemente, dos de un género y uno del otro), y sólo dos variables (e.g. mediciones de longitud de meñique y pulgar, pero no tienes que elegir necesariamente estos dos, pueden ser otros, lo importante es que sólo sean dos dedos de tres personas para simplificar) que utilizarás como coordenadas X e Y. Los datos se alojarán en esta [hoja de cálculo](https://docs.google.com/spreadsheets/d/1XsLfqS-xOAMjutK6zgQB9inw6G2VhWt2bNmaaC3eBrA/edit?usp=sharing).
 
 3. Genera la mariz de distancias.
 
-4. Interpreta el resultado. Formula preguntas basándote en los resultados obtenidos. No olvides que estás trabajando con rasgos biométricos de personas; las distancias son número "insensibles", pero están expresando algo sobre la biometría de las personas analizadas. Por ejemplo, ¿Qué significado tienen las distancias pequeñas (si las hubiere) en el contexto analizado? ¿Qué significan las distancias muy grandes?
+4. Interpreta el resultado. Formula preguntas basándote en los resultados obtenidos. No olvides que estás trabajando con rasgos biométricos de personas; las distancias son números "insensibles", pero están expresando algo sobre la biometría de las personas analizadas. Por ejemplo, ¿Qué significado tienen las distancias pequeñas (si las hubiere) en el contexto analizado? ¿Qué significan las distancias muy grandes?
 
 4. Bonus. Con suerte, empeño e inteligencia artificial, intenta reproducirlo en R, ya sea en mi servidor (si tienes acceso), o en [rdrr.io](https://rdrr.io/snippets/). Para ello, necesitarás dos cosas:
 
-   a. Ejecutar todo el código de R que se encuentra arriba. La mejor manera es clonar este repositorio (https://github.com/biogeografia-master/matriz-de-distancias.git) y ejecutarlo desde mi servidor o desde tu PC, si tienes R instalado. Para clonar puedes usar el botón verde `Code` que se encuentra en la página del repositorio. Con RStudio, podrás hacerlo también, usando `New Project`. Más detalles en el aula.
-   b. Pasarle los datos al intérprete de R, ya sea mediante un archivo (en mi servidor) o creando un `data.frame` directamente en rdrr.io con algo como esto:
+- Paso 1. Ejecutar el bloque de código de R que se encuentra justo debajo de este párrafo (es algo redundante, porque también se encuentra más arriba en este cuaderno, pero mejor tenerlo abajo también para garantizar su ejecución sin problemas).
+   
+```{r}
+library(ggplot2)
+library(reshape2)
+calculate_distance_matrix <- function(x_coords, y_coords, title) {
+  coords <- cbind(x_coords, y_coords)
+  rownames(coords) <- LETTERS[1:nrow(coords)]
+  colnames(coords) <- c("X", "Y")
+  dist_matrix <- as.matrix(dist(coords))
+  
+  # Convertir la matriz de distancias a formato largo para ggplot2
+  dist_long <- melt(dist_matrix)
+  colnames(dist_long) <- c("Punto1", "Punto2", "Distancia")
+  
+  # Crear el mapa de calor usando ggplot2
+  heatmap_plot <- ggplot(dist_long, aes(x = Punto1, y = Punto2, fill = Distancia)) +
+    geom_tile(color = "white") +
+    scale_fill_gradient(low = "white", high = "lightblue") +
+    geom_text(aes(label = sprintf("%.2f", Distancia)), color = "black", size = 4) +
+    theme_minimal() +
+    labs(title = paste0("Mapa de Calor de la Matriz de Distancias (Conjunto ", title, ")"),
+         x = "Punto",
+         y = "Punto",
+         fill = "Distancia")
+  
+  print(heatmap_plot)
+  
+  return(dist_matrix)
+}
+```
+
+   
+- Paso 2. Pasarle los datos al intérprete de R, ya sea mediante un archivo (en mi servidor) o creando un `data.frame` directamente en [rdrr.io](https://rdrr.io/snippets/) con algo como esto:
 
 ```{r, eval=F}
-datos <- data.frame(conjunto = c(AQUÍ VAN LOS NOMBRES/PSEUDÓNIMOS DE LAS PERSONAS SEPARADOS POR COMAS),
-                    x = c(AQUÍ VAN LAS MEDICIONES DE UNO DE LOS DEDOS ELEGIDOS),
-                    Y = c(AQUÍ VAN LAS MEDICIONES DEL OTRO DEDO ELEGIDO))
+datos <- data.frame(
+  conjunto = c(AQUÍ VAN LOS NOMBRES/PSEUDÓNIMOS DE LAS PERSONAS SEPARADOS POR COMAS),
+  x = c(AQUÍ VAN LAS MEDICIONES DE UNO DE LOS DEDOS ELEGIDOS),
+  Y = c(AQUÍ VAN LAS MEDICIONES DEL OTRO DEDO ELEGIDO))
 
 calculate_distance_matrix(
     x_coords = datos$x,
@@ -227,7 +276,11 @@ calculate_distance_matrix(
     title = datos$conjunto)
 ```
 
-Solución
+```{r, echo=F}
+knitr::knit_exit()
+```
+
+Solución.
 
 ```{r}
 library(tidyverse)
@@ -296,4 +349,3 @@ datos_sel_2 %>%
   theme_bw() +
   theme(text = element_text(size = 18))
 ```
-
