@@ -412,7 +412,7 @@ for (table in points_list) {
 |    B     |  1  |  1  |
 |    C     |  9  |  9  |
 
-### Función para calcular la matriz de distancias y generar un mapa de calor con `ggplot2`
+#### Función para calcular la matriz de distancias y generar un mapa de calor con `ggplot2`
 
 ``` r
 library(ggplot2)
@@ -445,7 +445,7 @@ calculate_distance_matrix <- function(x_coords, y_coords, title) {
 }
 ```
 
-### Aplicar la función para calcular la matriz de distancias y generar un mapa de calor para todos los conjuntos
+#### Aplicar la función para calcular la matriz de distancias y generar un mapa de calor para todos los conjuntos
 
 ``` r
 distance_matrices <- lapply(1:num_sets, function(conjunto) {
@@ -847,10 +847,10 @@ calculate_distance_matrix(
     title = datos$conjunto)
 ```
 
-Solución.
+#### Generando una matriz de distancia bajo la forma de un mapa de calor, usando las dimensiones de todos los dedos de todas las personas (no sólo dos dedos)
 
 ``` r
-library(tidyverse)
+library(tidyverse) # tidyverse es una colección. ggplot2 está incluido aquí
 library(reshape2)
 library(stringr)
 datos <- read.csv('biometria-basica.csv', check.names = F)

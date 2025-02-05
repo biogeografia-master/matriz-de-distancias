@@ -469,8 +469,6 @@ display: none;
 <li><a href="#tu-turno" id="toc-tu-turno">Tu turno</a>
 <ul>
 <li><a href="#parte-1.-calcula-una-matriz-de-distancias" id="toc-parte-1.-calcula-una-matriz-de-distancias">Parte 1. Calcula una matriz de distancias</a></li>
-<li><a href="#función-para-calcular-la-matriz-de-distancias-y-generar-un-mapa-de-calor-con-ggplot2" id="toc-función-para-calcular-la-matriz-de-distancias-y-generar-un-mapa-de-calor-con-ggplot2">Función para calcular la matriz de distancias y generar un mapa de calor con <code>ggplot2</code></a></li>
-<li><a href="#aplicar-la-función-para-calcular-la-matriz-de-distancias-y-generar-un-mapa-de-calor-para-todos-los-conjuntos" id="toc-aplicar-la-función-para-calcular-la-matriz-de-distancias-y-generar-un-mapa-de-calor-para-todos-los-conjuntos">Aplicar la función para calcular la matriz de distancias y generar un mapa de calor para todos los conjuntos</a></li>
 <li><a href="#parte-2.-biometría-básica" id="toc-parte-2.-biometría-básica">Parte 2. Biometría básica</a></li>
 </ul></li>
 </ul>
@@ -1427,9 +1425,8 @@ for (table in points_list) {
 </tr>
 </tbody>
 </table>
-</div>
-<div id="función-para-calcular-la-matriz-de-distancias-y-generar-un-mapa-de-calor-con-ggplot2" class="section level3">
-<h3>Función para calcular la matriz de distancias y generar un mapa de calor con <code>ggplot2</code></h3>
+<div id="función-para-calcular-la-matriz-de-distancias-y-generar-un-mapa-de-calor-con-ggplot2" class="section level4">
+<h4>Función para calcular la matriz de distancias y generar un mapa de calor con <code>ggplot2</code></h4>
 <pre class="r"><code>library(ggplot2)
 library(reshape2)
 
@@ -1459,8 +1456,8 @@ calculate_distance_matrix &lt;- function(x_coords, y_coords, title) {
   return(dist_matrix)
 }</code></pre>
 </div>
-<div id="aplicar-la-función-para-calcular-la-matriz-de-distancias-y-generar-un-mapa-de-calor-para-todos-los-conjuntos" class="section level3">
-<h3>Aplicar la función para calcular la matriz de distancias y generar un mapa de calor para todos los conjuntos</h3>
+<div id="aplicar-la-función-para-calcular-la-matriz-de-distancias-y-generar-un-mapa-de-calor-para-todos-los-conjuntos" class="section level4">
+<h4>Aplicar la función para calcular la matriz de distancias y generar un mapa de calor para todos los conjuntos</h4>
 <pre class="r"><code>distance_matrices &lt;- lapply(1:num_sets, function(conjunto) {
   print(paste0(&quot;Conjunto &quot;, conjunto))
   calculate_distance_matrix(
@@ -1710,6 +1707,7 @@ distance_matrices</code></pre>
 ## B 4.472136  0.000000 11.313708
 ## C 7.211103 11.313708  0.000000</code></pre>
 </div>
+</div>
 <div id="parte-2.-biometría-básica" class="section level3">
 <h3>Parte 2. Biometría básica</h3>
 <p>Mandato:</p>
@@ -1765,8 +1763,9 @@ calculate_distance_matrix(
     x_coords = datos$x,
     y_coords = datos$x,
     title = datos$conjunto)</code></pre>
-<p>Solución.</p>
-<pre class="r"><code>library(tidyverse)
+<div id="generando-una-matriz-de-distancia-bajo-la-forma-de-un-mapa-de-calor-usando-las-dimensiones-de-todos-los-dedos-de-todas-las-personas-no-sólo-dos-dedos" class="section level4">
+<h4>Generando una matriz de distancia bajo la forma de un mapa de calor, usando las dimensiones de todos los dedos de todas las personas (no sólo dos dedos)</h4>
+<pre class="r"><code>library(tidyverse) # tidyverse es una colección. ggplot2 está incluido aquí
 library(reshape2)
 library(stringr)
 datos &lt;- read.csv(&#39;biometria-basica.csv&#39;, check.names = F)
@@ -1830,6 +1829,7 @@ datos_sel_2 %&gt;%
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-scheele2025invasive" class="csl-entry">
 Scheele, Ben C, Geoffrey W Heard, Richard P Duncan, Simon Clulow, and Jarrod Sopniewski. 2025. <span>“An Invasive Pathogen Generally Contracts Species to Their Niche Cores, Not Margins.”</span> <em>Ecography</em>, e07612.
+</div>
 </div>
 </div>
 </div>
