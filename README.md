@@ -1,7 +1,9 @@
 Generación de la matriz de distancias
 ================
 Biogeografía (GEO-131)
-2025-02-04
+2025-02-05
+
+**EL FORMATO DE SALIDA ES gfm+tex_math_dollars-yaml_metadata_block**
 
 Versión HTML (quizá más legible),
 [aquí](https://biogeografia-master.github.io/matriz-de-distancias/README.html)
@@ -844,6 +846,84 @@ calculate_distance_matrix(
     y_coords = datos$x,
     title = datos$conjunto)
 ```
+
+Solución.
+
+``` r
+library(tidyverse)
+library(reshape2)
+library(stringr)
+datos <- read.csv('biometria-basica.csv', check.names = F)
+datos_sel <- datos[,4:8]
+rownames(datos_sel) <- datos$`Nombre. No tienes que dar tu nombre verdadero, puedes usar un pseudónimo. No se puede dejar vacío.`
+colnames(datos_sel) <- c('pulgar', 'indice', 'mayor', 'anular', 'meñique')
+datos_sel_dist <- as.matrix(dist(datos_sel))
+dist_long <- melt(datos_sel_dist)
+colnames(dist_long) <- c("Persona1", "Persona2", "Distancia")
+```
+
+``` r
+# Crear el mapa de calor usando ggplot2
+heatmap_plot <- ggplot(dist_long, aes(x = Persona1, y = Persona2, fill = Distancia)) +
+    geom_tile(color = "white") +
+    scale_fill_gradient(low = "white", high = "lightblue") +
+    geom_text(aes(label = sprintf("%.2f", Distancia)), color = "black", size = 2) +
+    theme_minimal() +
+    labs(title = "Mapa de Calor de la Matriz de Distancias",
+         x = "Persona",
+         y = "Persona",
+         fill = "Distancia") +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +  # Aplicar str_wrap en eje x
+  scale_y_discrete(labels = function(y) str_wrap(y, width = 10)) +  # Aplicar str_wrap en eje y
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), text = element_text(size = 12))
+print(heatmap_plot)
+```
+
+<img src="README_files/figure-gfm/unnamed-chunk-13-1.png" width="100%" />
+
+``` r
+# Ordenado
+# Ordernar por distancia
+# dist_long_ord <- dist_long
+personas_ord_dist <- dist_long %>%
+  filter(Distancia>0) %>% 
+  arrange(Distancia) %>%
+  pull(unique(Persona1))
+dist_long_ord <- dist_long %>% 
+  mutate(Persona1 = factor(Persona1, levels = unique(personas_ord_dist)),
+         Persona2 = factor(Persona2, levels = unique(personas_ord_dist)))
+
+# Ahora creamos el mapa de calor ordenado
+heatmap_plot_ord <- ggplot(dist_long_ord, aes(x = Persona1, y = Persona2, fill = Distancia)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient(low = "white", high = "lightblue") +
+  geom_text(aes(label = sprintf("%.2f", Distancia)), color = "black", size = 2) +
+  theme_minimal() +
+  labs(title = "Mapa de calor de la matriz de distancias ordenadas ascendentemente",
+       x = "Punto",
+       y = "Punto",
+       fill = "Distancia") +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +  # Aplicar str_wrap en eje x
+  scale_y_discrete(labels = function(y) str_wrap(y, width = 10)) +  # Aplicar str_wrap en eje y
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), text = element_text(size = 10))
+print(heatmap_plot_ord)
+```
+
+<img src="README_files/figure-gfm/unnamed-chunk-13-2.png" width="100%" />
+
+``` r
+datos_sel_2 <- datos_sel %>% rownames_to_column('Nombre') %>% mutate(Género = datos$Género)
+datos_sel_2 %>%
+  pivot_longer(cols = pulgar:meñique, names_to = 'Dedo', values_to = 'L (cm)') %>% 
+  filter(!is.na(Género), nchar(Género) > 0) %>% 
+  ggplot + aes(x = Género, y = `L (cm)`) + 
+  geom_boxplot() +
+  facet_wrap(~Dedo) +
+  theme_bw() +
+  theme(text = element_text(size = 18))
+```
+
+<img src="README_files/figure-gfm/unnamed-chunk-13-3.png" width="100%" />
 
 <div id="refs" class="references csl-bib-body hanging-indent"
 entry-spacing="0">

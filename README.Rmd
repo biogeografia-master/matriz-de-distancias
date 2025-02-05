@@ -6,7 +6,6 @@ output:
   # bookdown::github_document2:
   #   number_sections: false
   #   fig_caption: yes
-  #   keep_html: true
   bookdown::html_document2:
     number_sections: false
     code_folding: hide
@@ -33,6 +32,9 @@ org_name <- basename(dirname(repo_url))
 rmd_filename <- tools::file_path_sans_ext(basename(knitr::current_input()))
 github_pages_url <- paste0("https://", org_name, ".github.io/", repo_name, "/", rmd_filename, ".html")
 ```
+
+**EL FORMATO DE SALIDA ES `r output_format`**
+
 
 ```{r, results='asis', echo=F}
 if (grepl('gfm', output_format)) {
@@ -278,7 +280,7 @@ calculate_distance_matrix(
     title = datos$conjunto)
 ```
 
-```{r, echo=F}
+```{r, echo=F, eval=F}
 knitr::knit_exit()
 ```
 
@@ -310,7 +312,7 @@ heatmap_plot <- ggplot(dist_long, aes(x = Persona1, y = Persona2, fill = Distanc
          fill = "Distancia") +
   scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +  # Aplicar str_wrap en eje x
   scale_y_discrete(labels = function(y) str_wrap(y, width = 10)) +  # Aplicar str_wrap en eje y
-  theme(axis.text.x = element_text(angle = 45, hjust = 1), text = element_text(size = 10))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), text = element_text(size = 12))
 print(heatmap_plot)
 
 
@@ -338,13 +340,12 @@ heatmap_plot_ord <- ggplot(dist_long_ord, aes(x = Persona1, y = Persona2, fill =
   scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +  # Aplicar str_wrap en eje x
   scale_y_discrete(labels = function(y) str_wrap(y, width = 10)) +  # Aplicar str_wrap en eje y
   theme(axis.text.x = element_text(angle = 45, hjust = 1), text = element_text(size = 10))
-
 print(heatmap_plot_ord)
-
 
 datos_sel_2 <- datos_sel %>% rownames_to_column('Nombre') %>% mutate(Género = datos$Género)
 datos_sel_2 %>%
   pivot_longer(cols = pulgar:meñique, names_to = 'Dedo', values_to = 'L (cm)') %>% 
+  filter(!is.na(Género), nchar(Género) > 0) %>% 
   ggplot + aes(x = Género, y = `L (cm)`) + 
   geom_boxplot() +
   facet_wrap(~Dedo) +
