@@ -51,11 +51,11 @@ hábitats. En definitiva, es una herramienta de mucha utilidad.
 Como métrica usaremos la distancia euclidiana. La distancia euclidiana
 es la más común de las métricas de este renglón, pero no necesariamente
 es la más idónea en todos los casos. Existen otras métricas de
-distancia, y te pido que leas [este reciente
-artículo](https://nsojournals.onlinelibrary.wiley.com/doi/10.1111/ecog.07612)
-de Scheele et al. (2025), especialmente la sección “*Materials and
-Methods*”; pide ayuda a alguna IA con la terminología y la extracción de
-las principales ideas.
+distancia, y te pido que leas este reciente artículo de Scheele et al.
+(2025), especialmente la sección “*Materials and Methods*”
+[(https://nsojournals.onlinelibrary.wiley.com/doi/10.1111/ecog.07612)](https://nsojournals.onlinelibrary.wiley.com/doi/10.1111/ecog.07612);
+pide ayuda a alguna IA con la terminología y la extracción de las
+principales ideas.
 
 ## Objetivos de la práctica
 
