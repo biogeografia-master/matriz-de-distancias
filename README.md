@@ -1,9 +1,31 @@
 Generación de la matriz de distancias
 ================
 Biogeografía (GEO-131)
-2025-02-05
+2025-08-19
 
-**EL FORMATO DE SALIDA ES gfm+tex_math_dollars-yaml_metadata_block**
+- [Introducción](#introducción)
+- [Objetivos de la práctica](#objetivos-de-la-práctica)
+- [Teoría](#teoría)
+- [Ejercicio demostrativo](#ejercicio-demostrativo)
+  - [Planteamiento del Problema](#planteamiento-del-problema)
+  - [A mano](#a-mano)
+    - [1) Distancia $d_{AB}$](#1-distancia-d_ab)
+    - [2) Distancia $d_{AC}$](#2-distancia-d_ac)
+    - [3) Distancia $d_{BC}$](#3-distancia-d_bc)
+  - [Matriz de distancias (exacta)](#matriz-de-distancias-exacta)
+  - [Matriz de distancias
+    (aproximada)](#matriz-de-distancias-aproximada)
+  - [Demostración con código reproducible en
+    R](#demostración-con-código-reproducible-en-r)
+- [Tu turno](#tu-turno)
+  - [Parte 1. Calcula una matriz de
+    distancias](#parte-1-calcula-una-matriz-de-distancias)
+    - [Conjuntos (elige uno, anúncialo en el
+      foro)](#conjuntos-elige-uno-anúncialo-en-el-foro)
+    - [Soluciones numéricas](#soluciones-numéricas)
+  - [Parte 2. Biometría básica](#parte-2-biometría-básica)
+
+<!-- **EL FORMATO DE SALIDA ES gfm+tex_math_dollars-yaml_metadata_block** -->
 
 Versión HTML (quizá más legible),
 [aquí](https://biogeografia-master.github.io/matriz-de-distancias/README.html)
@@ -14,18 +36,39 @@ Versión HTML (quizá más legible),
 
 ## Introducción
 
-En este ejercicio, nos enfocaremos en la **Generación de la Matriz de
-Distancias** entre puntos en un espacio bidimensional. La matriz de
-distancias es una herramienta crucial en la geografía, biogeografía y
-análisis espacial, ya que permite cuantificar la proximidad entre
-diferentes puntos de interés. Como métrica usaremos la distancia
-euclidiana. La distancia euclidiana es la más común, pero no
-necesariamente es la más idónea en todos los casos. Existen otras
-métricas de distancia, y te pido que leas [este reciente
+En esta práctica, compuesta de dos partes, nos enfocaremos en la
+**Generación de la Matriz de Distancias** entre puntos en un espacio
+bidimensional. La matriz de distancias es una herramienta crucial en la
+geografía, biogeografía, ecología y el análisis espacial, ya que permite
+cuantificar la proximidad entre diferentes puntos de interés, pero
+igualmente, sirve para cuantificar la similitud o disimilitud entre
+especies, sitios de muestreo, hábitats e incluso ecosistemas o biomas.
+Asimismo, la matriz de distancias es un requisito imprescindible cuando
+se necesita agrupar datos, especies, sitios, hábitats, e incluso para
+ordenarlos y establecer asociaciones entre especies, o entre especies y
+hábitats. En definitiva, es una herramienta de mucha utilidad.
+
+Como métrica usaremos la distancia euclidiana. La distancia euclidiana
+es la más común de las métricas de este renglón, pero no necesariamente
+es la más idónea en todos los casos. Existen otras métricas de
+distancia, y te pido que leas [este reciente
 artículo](https://nsojournals.onlinelibrary.wiley.com/doi/10.1111/ecog.07612)
 de Scheele et al. (2025), especialmente la sección “*Materials and
 Methods*”; pide ayuda a alguna IA con la terminología y la extracción de
 las principales ideas.
+
+## Objetivos de la práctica
+
+1.  **Comprender y aplicar la distancia euclidiana** como métrica básica
+    para calcular distancias entre puntos en un espacio bidimensional.
+
+2.  **Construir e interpretar una matriz de distancias**, identificando
+    qué significan distancias grandes, intermedias o pequeñas en
+    contextos espaciales y biométricos.
+
+3.  **Representar y analizar los resultados gráficamente**, mediante
+    diagramas de dispersión y mapas de calor, integrando tanto cálculos
+    manuales como el uso de R.
 
 ## Teoría
 
@@ -40,7 +83,7 @@ $$
 La matriz de distancias es una matriz cuadrada donde cada elemento
 $d_{ij}$ representa la distancia entre los puntos $i$ y $j$.
 
-## Ejercicio
+## Ejercicio demostrativo
 
 ### Planteamiento del Problema
 
@@ -54,10 +97,67 @@ estará alejado de ambos. Las coordenadas de estos puntos son:
 
 Queremos calcular la matriz de distancias para estos tres puntos.
 
+### A mano
+
+Usaremos la **distancia euclidiana** entre dos puntos $P_i=(x_i,y_i)$ y
+$P_j=(x_j,y_j)$:
+
+$$
+d_{ij} \;=\; \sqrt{(x_i-x_j)^2+(y_i-y_j)^2}
+$$
+
+Con:
+
+- $A=(2,2)$
+- $B=(3,3)$
+- $C=(10,10)$
+
+#### 1) Distancia $d_{AB}$
+
+$$
+\Delta x = 3-2 = 1,\quad \Delta y = 3-2 = 1
+$$ $$
+d_{AB}=\sqrt{1^2+1^2}=\sqrt{2}\approx 1.4142
+$$
+
+#### 2) Distancia $d_{AC}$
+
+$$
+\Delta x = 10-2 = 8,\quad \Delta y = 10-2 = 8
+$$ $$
+d_{AC}=\sqrt{8^2+8^2}=\sqrt{64+64}=\sqrt{128}=8\sqrt{2}\approx 11.3137
+$$
+
+#### 3) Distancia $d_{BC}$
+
+$$
+\Delta x = 10-3 = 7,\quad \Delta y = 10-3 = 7
+$$ $$
+d_{BC}=\sqrt{7^2+7^2}=\sqrt{49+49}=\sqrt{98}=7\sqrt{2}\approx 9.8995
+$$
+
+### Matriz de distancias (exacta)
+
+$$
+D=\begin{pmatrix}
+0 & \sqrt{2} & 8\sqrt{2}\\[4pt]
+\sqrt{2} & 0 & 7\sqrt{2}\\[4pt]
+8\sqrt{2} & 7\sqrt{2} & 0
+\end{pmatrix}
+$$
+
+### Matriz de distancias (aproximada)
+
+|       | A       | B      | C       |
+|-------|---------|--------|---------|
+| **A** | 0.0000  | 1.4142 | 11.3137 |
+| **B** | 1.4142  | 0.0000 | 9.8995  |
+| **C** | 11.3137 | 9.8995 | 0.0000  |
+
 ### Demostración con código reproducible en R
 
-Primero, definimos las coordenadas de los puntos y calculamos las
-distancias entre ellos:
+Tendría que dar lo mismo que haciéndolo a mano. Primero, definimos las
+coordenadas de los puntos y calculamos las distancias entre ellos:
 
 ``` r
 # Coordenadas de los puntos
@@ -69,7 +169,14 @@ x_C <- 10; y_C <- 10
 coords <- matrix(c(x_A, y_A, x_B, y_B, x_C, y_C), ncol = 2, byrow = TRUE)
 rownames(coords) <- c("A", "B", "C")
 colnames(coords) <- c("X", "Y")
+knitr::kable(as.matrix(coords))
 ```
+
+|     |   X |   Y |
+|:----|----:|----:|
+| A   |   2 |   2 |
+| B   |   3 |   3 |
+| C   |  10 |  10 |
 
 Representamos cada punto en un gráfico de dispersión.
 
@@ -121,56 +228,36 @@ Mandato:
 2.  Calcula la matriz de distancias entre tres puntos de coordenadas
     $X, Y$ diferentes.
 
-3.  Si puedes (si tienes lápiz) aplica un sombreado intenso a las
-    distancias diagonal principal, un sombreado moderado a las
-    distancias intermedias y sin sombreado a las distancias grandes. Si
-    tienes lápices de distintos colores, podrías usar el tono para
-    representar las distintas distancias (aunque esto es
-    semiológicamente delicado).
+3.  Si puedes (si tienes lápiz), **en la matriz de distancias**, aplica
+    un sombreado intenso a las distancias de la diagonal principal, un
+    sombreado moderado a las distancias intermedias y sin sombreado a
+    las distancias grandes. Si tienes lápices de distintos colores,
+    podrías usar el tono para representar las distintas distancias
+    (aunque esto es semiológicamente delicado).
 
 > Podría servirte el representar los tres puntos de tu conjunto elegido
 > en un plano cartesiano. Así podrás visualizar mejor su distribución.
 
-``` r
-library(knitr)
-library(dplyr)
+4.  Imagina que los datos son **del mundo real**: podrían ser
+    coordenadas geográficas, medidas biométricas, características de
+    especies, atributos de hábitats, etc.
+    - Reflexiona sobre los resultados: ¿qué significado tienen las
+      distancias pequeñas o grandes en ese contexto imaginario?
+    - Formula al menos **dos preguntas** que podrían responderse a
+      partir de la matriz de distancias en tu contexto imaginario.
+      Ejemplos orientativos:
+      - ¿Qué individuos (o sitios) se parecen más entre sí?
+      - ¿Hay algún punto que aparezca como un “outlier” muy alejado de
+        los demás?
+      - ¿Qué implicaciones podría tener esto en biogeografía,
+        conservación o en un análisis de similitud entre
+        personas/especies/sitios?
 
-# Número de conjuntos
-num_sets <- 30
+> Cada quien puede imaginar la situación que prefiera, pero siempre
+> recordando que se trata de **dos atributos medidos en tres
+> elementos**.
 
-# Función para generar una tabla para cada conjunto
-generate_points <- function(set_id) {
-  
-  # Generar coordenadas enteras para los puntos A, B, C
-  points <- data.frame(
-    `ID Punto` = c("A", "B", "C"),
-    X = c(sample(1:5, 2), sample(8:10, 1)),
-    Y = c(sample(1:5, 2), sample(8:10, 1)),
-    check.names = F
-  )
-  
-  # Crear una lista que combine el encabezado con la tabla
-  output <- list(
-    paste0("**Conjunto #", set_id, "**"),
-    kable(points, align = "c")
-  )
-  
-  return(list(points, output))
-}
-
-# Generar las 20 tablas estableciendo la semilla para reproducibilidad
-set.seed(123); points_list <- lapply(
-  1:num_sets, function(x) generate_points(x)[[2]])
-set.seed(123); points_df <- lapply(
-  1:num_sets, function(x) generate_points(x)[[1]])
-
-# Imprimir las tablas
-for (table in points_list) {
-  cat(table[[1]], "\n\n")
-  print(table[[2]])
-  cat("\n\n")
-}
-```
+#### Conjuntos (elige uno, anúncialo en el foro)
 
 **Conjunto \#1**
 
@@ -412,50 +499,16 @@ for (table in points_list) {
 |    B     |  1  |  1  |
 |    C     |  9  |  9  |
 
-#### Función para calcular la matriz de distancias y generar un mapa de calor con `ggplot2`
+#### Soluciones numéricas
 
-``` r
-library(ggplot2)
-library(reshape2)
+Te dejo a continuación la solución para cada conjunto. La solución sólo
+te servirá para comprobar que obtuviste un resultado correcto, pero
+debes incluir los cálculos en tu práctica.
 
-calculate_distance_matrix <- function(x_coords, y_coords, title) {
-  coords <- cbind(x_coords, y_coords)
-  rownames(coords) <- LETTERS[1:nrow(coords)]
-  colnames(coords) <- c("X", "Y")
-  dist_matrix <- as.matrix(dist(coords))
-  
-  # Convertir la matriz de distancias a formato largo para ggplot2
-  dist_long <- melt(dist_matrix)
-  colnames(dist_long) <- c("Punto1", "Punto2", "Distancia")
-  
-  # Crear el mapa de calor usando ggplot2
-  heatmap_plot <- ggplot(dist_long, aes(x = Punto1, y = Punto2, fill = Distancia)) +
-    geom_tile(color = "white") +
-    scale_fill_gradient(low = "white", high = "lightblue") +
-    geom_text(aes(label = sprintf("%.2f", Distancia)), color = "black", size = 4) +
-    theme_minimal() +
-    labs(title = paste0("Mapa de Calor de la Matriz de Distancias (Conjunto ", title, ")"),
-         x = "Punto",
-         y = "Punto",
-         fill = "Distancia")
-  
-  print(heatmap_plot)
-  
-  return(dist_matrix)
-}
-```
-
-#### Aplicar la función para calcular la matriz de distancias y generar un mapa de calor para todos los conjuntos
-
-``` r
-distance_matrices <- lapply(1:num_sets, function(conjunto) {
-  print(paste0("Conjunto ", conjunto))
-  calculate_distance_matrix(
-    x_coords = points_df[[conjunto]]$X,
-    y_coords = points_df[[conjunto]]$Y,
-    title = conjunto)
-})
-```
+Primero, en forma de “mapa de calor”, y un poco más abajo, en forma
+numérica (varias cifras significativas visibles). Nota que la diagonal
+en el mapa de calor tiene una orientación distinta a la de la forma
+numérica, pero el resultado para cada conjunto es idéntico.
 
     ## [1] "Conjunto 1"
 
@@ -576,11 +629,6 @@ distance_matrices <- lapply(1:num_sets, function(conjunto) {
     ## [1] "Conjunto 30"
 
 <img src="README_files/figure-gfm/unnamed-chunk-8-30.png" width="60%" />
-
-``` r
-names(distance_matrices) <- paste0('Conjunto ', 1:num_sets)
-distance_matrices
-```
 
     ## $`Conjunto 1`
     ##          A        B        C
@@ -766,20 +814,20 @@ distance_matrices
 
 Mandato:
 
-1.  Rellena [este
-    formulario](https://docs.google.com/forms/d/e/1FAIpQLSdSC4afeJeaH7WG1-NekjFwOFh22dcAdVpdYbMFIeCke7u7aA/viewform?usp=dialog).
+1.  Rellena este formulario: <https://forms.gle/kzsy2mCymyjhuzf67>.
 
 <img src="qr.jpg" style="width:35.0%" />
 
-2.  Cuando haya varias respuestas en línea, para no complicarlo, elige
-    sólo tres conjuntos de datos (es decir, mediciones de tres
+2.  Cuando haya varias respuestas en línea (el profesor se encargará de
+    hacer que los datos estén visibles para todos), para no complicarlo,
+    elige sólo tres conjuntos de datos (es decir, mediciones de tres
     estudiantes, preferiblemente, dos de un género y uno del otro), y
     sólo dos variables (e.g. mediciones de longitud de meñique y pulgar,
     pero no tienes que elegir necesariamente estos dos, pueden ser
     otros, lo importante es que sólo sean dos dedos de tres personas
     para simplificar) que utilizarás como coordenadas X e Y. Los datos
-    se alojarán en esta [hoja de
-    cálculo](https://docs.google.com/spreadsheets/d/1XsLfqS-xOAMjutK6zgQB9inw6G2VhWt2bNmaaC3eBrA/edit?usp=sharing).
+    se alojarán en esta hoja de cálculo:
+    <https://docs.google.com/spreadsheets/d/1RZCRvchbfV_77vFeiujyBB5dvDhFqywtr-ymfkSOSjc/edit?usp=sharing>.
 
 3.  Genera la mariz de distancias.
 
@@ -789,17 +837,18 @@ Mandato:
     pero están expresando algo sobre la biometría de las personas
     analizadas. Por ejemplo, ¿Qué significado tienen las distancias
     pequeñas (si las hubiere) en el contexto analizado? ¿Qué significan
-    las distancias muy grandes?
+    las distancias muy grandes? ¿Hay alguna relación entre el genero y
+    la similitud entre mayor y anular? ¿Las personas no binarias, tienen
+    proporciones distintas entre los dedos?
 
 5.  Bonus. Con suerte, empeño e inteligencia artificial, intenta
     reproducirlo en R, ya sea en mi servidor (si tienes acceso), o en
-    [rdrr.io](https://rdrr.io/snippets/). Para ello, necesitarás dos
-    cosas:
+    [rdrr.io](https://rdrr.io/snippets/). Si lo logras, puedes enviar tu
+    resultado por el foro. Para ello, necesitarás dos cosas:
 
 - Paso 1. Ejecutar el bloque de código de R que se encuentra justo
-  debajo de este párrafo (es algo redundante, porque también se
-  encuentra más arriba en este cuaderno, pero mejor tenerlo abajo
-  también para garantizar su ejecución sin problemas).
+  debajo de este párrafo (si ves el botón “Show”, presiónalo para
+  desplegar el código):
 
 ``` r
 library(ggplot2)
@@ -833,7 +882,8 @@ calculate_distance_matrix <- function(x_coords, y_coords, title) {
 
 - Paso 2. Pasarle los datos al intérprete de R, ya sea mediante un
   archivo (en mi servidor) o creando un `data.frame` directamente en
-  [rdrr.io](https://rdrr.io/snippets/) con algo como esto:
+  [rdrr.io](https://rdrr.io/snippets/) con algo como esto (si ves el
+  botón “Show”, presiónalo para desplegar el código):
 
 ``` r
 datos <- data.frame(
@@ -846,84 +896,6 @@ calculate_distance_matrix(
     y_coords = datos$x,
     title = datos$conjunto)
 ```
-
-#### Generando una matriz de distancia bajo la forma de un mapa de calor, usando las dimensiones de todos los dedos de todas las personas (no sólo dos dedos)
-
-``` r
-library(tidyverse) # tidyverse es una colección. ggplot2 está incluido aquí
-library(reshape2)
-library(stringr)
-datos <- read.csv('biometria-basica.csv', check.names = F)
-datos_sel <- datos[,4:8]
-rownames(datos_sel) <- datos$`Nombre. No tienes que dar tu nombre verdadero, puedes usar un pseudónimo. No se puede dejar vacío.`
-colnames(datos_sel) <- c('pulgar', 'indice', 'mayor', 'anular', 'meñique')
-datos_sel_dist <- as.matrix(dist(datos_sel))
-dist_long <- melt(datos_sel_dist)
-colnames(dist_long) <- c("Persona1", "Persona2", "Distancia")
-```
-
-``` r
-# Crear el mapa de calor usando ggplot2
-heatmap_plot <- ggplot(dist_long, aes(x = Persona1, y = Persona2, fill = Distancia)) +
-    geom_tile(color = "white") +
-    scale_fill_gradient(low = "white", high = "lightblue") +
-    geom_text(aes(label = sprintf("%.2f", Distancia)), color = "black", size = 2) +
-    theme_minimal() +
-    labs(title = "Mapa de Calor de la Matriz de Distancias",
-         x = "Persona",
-         y = "Persona",
-         fill = "Distancia") +
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +  # Aplicar str_wrap en eje x
-  scale_y_discrete(labels = function(y) str_wrap(y, width = 10)) +  # Aplicar str_wrap en eje y
-  theme(axis.text.x = element_text(angle = 45, hjust = 1), text = element_text(size = 12))
-print(heatmap_plot)
-```
-
-<img src="README_files/figure-gfm/unnamed-chunk-13-1.png" width="100%" />
-
-``` r
-# Ordenado
-# Ordernar por distancia
-# dist_long_ord <- dist_long
-personas_ord_dist <- dist_long %>%
-  filter(Distancia>0) %>% 
-  arrange(Distancia) %>%
-  pull(unique(Persona1))
-dist_long_ord <- dist_long %>% 
-  mutate(Persona1 = factor(Persona1, levels = unique(personas_ord_dist)),
-         Persona2 = factor(Persona2, levels = unique(personas_ord_dist)))
-
-# Ahora creamos el mapa de calor ordenado
-heatmap_plot_ord <- ggplot(dist_long_ord, aes(x = Persona1, y = Persona2, fill = Distancia)) +
-  geom_tile(color = "white") +
-  scale_fill_gradient(low = "white", high = "lightblue") +
-  geom_text(aes(label = sprintf("%.2f", Distancia)), color = "black", size = 2) +
-  theme_minimal() +
-  labs(title = "Mapa de calor de la matriz de distancias ordenadas ascendentemente",
-       x = "Punto",
-       y = "Punto",
-       fill = "Distancia") +
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +  # Aplicar str_wrap en eje x
-  scale_y_discrete(labels = function(y) str_wrap(y, width = 10)) +  # Aplicar str_wrap en eje y
-  theme(axis.text.x = element_text(angle = 45, hjust = 1), text = element_text(size = 10))
-print(heatmap_plot_ord)
-```
-
-<img src="README_files/figure-gfm/unnamed-chunk-13-2.png" width="100%" />
-
-``` r
-datos_sel_2 <- datos_sel %>% rownames_to_column('Nombre') %>% mutate(Género = datos$Género)
-datos_sel_2 %>%
-  pivot_longer(cols = pulgar:meñique, names_to = 'Dedo', values_to = 'L (cm)') %>% 
-  filter(!is.na(Género), nchar(Género) > 0) %>% 
-  ggplot + aes(x = Género, y = `L (cm)`) + 
-  geom_boxplot() +
-  facet_wrap(~Dedo) +
-  theme_bw() +
-  theme(text = element_text(size = 18))
-```
-
-<img src="README_files/figure-gfm/unnamed-chunk-13-3.png" width="100%" />
 
 <div id="refs" class="references csl-bib-body hanging-indent"
 entry-spacing="0">
