@@ -369,16 +369,16 @@ calculate_distance_matrix <- function(x_coords, y_coords, title) {
 datos <- data.frame(
   conjunto = c(AQUÍ VAN LOS NOMBRES/PSEUDÓNIMOS DE LAS PERSONAS SEPARADOS POR COMAS),
   x = c(AQUÍ VAN LAS MEDICIONES DE UNO DE LOS DEDOS ELEGIDOS),
-  Y = c(AQUÍ VAN LAS MEDICIONES DEL OTRO DEDO ELEGIDO))
+  y = c(AQUÍ VAN LAS MEDICIONES DEL OTRO DEDO ELEGIDO))
 
 calculate_distance_matrix(
     x_coords = datos$x,
-    y_coords = datos$x,
+    y_coords = datos$y,
     title = datos$conjunto)
 ```
 
 
-```{r, echo=F, eval=T}
+```{r, echo=F, eval=F}
 knitr::knit_exit()
 ```
 

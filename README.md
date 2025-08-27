@@ -1,7 +1,7 @@
 Generación de la matriz de distancias
 ================
 Biogeografía (GEO-131)
-2025-08-19
+2025-08-27
 
 - [Introducción](#introducción)
 - [Objetivos de la práctica](#objetivos-de-la-práctica)
@@ -24,6 +24,15 @@ Biogeografía (GEO-131)
       foro)](#conjuntos-elige-uno-anúncialo-en-el-foro)
     - [Soluciones numéricas](#soluciones-numéricas)
   - [Parte 2. Biometría básica](#parte-2-biometría-básica)
+    - [Generando una matriz de distancia bajo la forma de un mapa de
+      calor, usando las dimensiones de todos los dedos de todas las
+      personas (no sólo dos
+      dedos)](#generando-una-matriz-de-distancia-bajo-la-forma-de-un-mapa-de-calor-usando-las-dimensiones-de-todos-los-dedos-de-todas-las-personas-no-sólo-dos-dedos)
+    - [Generando un diagrama de cajas de las longitudes de los dedos en
+      función del género, usando las dimensiones de todos los dedos de
+      todas las personas (no sólo dos
+      dedos)](#generando-un-diagrama-de-cajas-de-las-longitudes-de-los-dedos-en-función-del-género-usando-las-dimensiones-de-todos-los-dedos-de-todas-las-personas-no-sólo-dos-dedos)
+- [Referencias citadas](#referencias-citadas)
 
 <!-- **EL FORMATO DE SALIDA ES gfm+tex_math_dollars-yaml_metadata_block** -->
 
@@ -889,13 +898,37 @@ calculate_distance_matrix <- function(x_coords, y_coords, title) {
 datos <- data.frame(
   conjunto = c(AQUÍ VAN LOS NOMBRES/PSEUDÓNIMOS DE LAS PERSONAS SEPARADOS POR COMAS),
   x = c(AQUÍ VAN LAS MEDICIONES DE UNO DE LOS DEDOS ELEGIDOS),
-  Y = c(AQUÍ VAN LAS MEDICIONES DEL OTRO DEDO ELEGIDO))
+  y = c(AQUÍ VAN LAS MEDICIONES DEL OTRO DEDO ELEGIDO))
 
 calculate_distance_matrix(
     x_coords = datos$x,
-    y_coords = datos$x,
+    y_coords = datos$y,
     title = datos$conjunto)
 ```
+
+#### Generando una matriz de distancia bajo la forma de un mapa de calor, usando las dimensiones de todos los dedos de todas las personas (no sólo dos dedos)
+
+<img src="README_files/figure-gfm/unnamed-chunk-14-1.png" width="100%" /><img src="README_files/figure-gfm/unnamed-chunk-14-2.png" width="100%" />
+
+#### Generando un diagrama de cajas de las longitudes de los dedos en función del género, usando las dimensiones de todos los dedos de todas las personas (no sólo dos dedos)
+
+``` r
+datos_sel_2 <- datos_sel %>%
+  rownames_to_column('Nombre') %>%
+  mutate(Género = as.character(datos$Género))
+datos_sel_2 %>%
+  pivot_longer(cols = pulgar:meñique, names_to = 'Dedo', values_to = 'L (cm)') %>% 
+  filter(!is.na(Género), nchar(Género) > 0) %>% 
+  ggplot + aes(x = Género, y = `L (cm)`) + 
+  geom_boxplot() +
+  facet_wrap(~Dedo) +
+  theme_bw() +
+  theme(text = element_text(size = 18))
+```
+
+<img src="README_files/figure-gfm/unnamed-chunk-15-1.png" width="100%" />
+
+## Referencias citadas
 
 <div id="refs" class="references csl-bib-body hanging-indent"
 entry-spacing="0">
