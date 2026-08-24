@@ -1,8 +1,9 @@
 Generación de la matriz de distancias
 ================
 Biogeografía (GEO-131)
-2025-08-27
+2026-08-24
 
+- [Fecha/hora de entrega](#fechahora-de-entrega)
 - [Introducción](#introducción)
 - [Objetivos de la práctica](#objetivos-de-la-práctica)
 - [Teoría](#teoría)
@@ -42,6 +43,10 @@ Versión HTML (quizá más legible),
 > Todas las prácticas de este curso están pensadas para realizarse con
 > lápiz, papel y, a veces una calculadora (del móvil). Ocasionalmente,
 > usarás alguna herramientas adicional.
+
+## Fecha/hora de entrega
+
+**Ver portal de la asignatura**
 
 ## Introducción
 

@@ -54,6 +54,11 @@ if (grepl('gfm', output_format)) {
 
 > Todas las prácticas de este curso están pensadas para realizarse con lápiz, papel y, a veces una calculadora (del móvil). Ocasionalmente, usarás alguna herramientas adicional.
 
+## Fecha/hora de entrega
+
+**Ver portal de la asignatura**
+
+
 ## Introducción
 
 En esta práctica, compuesta de dos partes, nos enfocaremos en la **Generación de la Matriz de Distancias** entre puntos en un espacio bidimensional. La matriz de distancias es una herramienta crucial en la geografía, biogeografía, ecología y el análisis espacial, ya que permite cuantificar la proximidad entre diferentes puntos de interés, pero igualmente, sirve para cuantificar la similitud o disimilitud entre especies, sitios de muestreo, hábitats e incluso ecosistemas o biomas. Asimismo, la matriz de distancias es un requisito imprescindible cuando se necesita agrupar datos, especies, sitios, hábitats, e incluso para ordenarlos y establecer asociaciones entre especies, o entre especies y hábitats. En definitiva, es una herramienta de mucha utilidad.
